@@ -9,24 +9,23 @@
     <atom:link href="http://example.com/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>不相信奇迹的人永远都不会创造奇迹</description>
-    <pubDate>Thu, 13 Oct 2022 08:51:57 GMT</pubDate>
+    <pubDate>Thu, 13 Oct 2022 11:32:30 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
-      <title></title>
+      <title>A Simple Pooling-Based Design for Real-Time Salient Object Detection</title>
       <link>http://example.com/2022/10/13/First/</link>
       <guid>http://example.com/2022/10/13/First/</guid>
       <pubDate>Thu, 13 Oct 2022 08:53:26 GMT</pubDate>
       
         
         
-      <description>&lt;hr&gt;
-&lt;h2 id=&quot;title-A-Simple-Pooling-Based-Design-for-Real-Time-Salient-Object-Detection&quot;&gt;&lt;a href=&quot;#title-A-Simple-Pooling-Based-Design-for-R</description>
+      <description>&lt;h2 id=&quot;摘要：&quot;&gt;&lt;a href=&quot;#摘要：&quot; class=&quot;headerlink&quot; title=&quot;摘要：&quot;&gt;&lt;/a&gt;摘要：&lt;/h2&gt;&lt;p&gt;本文通过扩展卷积神经网络中的池化部分来解决显著性目标检测问题。基于特征金字塔，在自底向上路径上加入GGM模块（Global Guid</description>
         
       
       
       
-      <content:encoded><![CDATA[<hr><h2 id="title-A-Simple-Pooling-Based-Design-for-Real-Time-Salient-Object-Detection"><a href="#title-A-Simple-Pooling-Based-Design-for-Real-Time-Salient-Object-Detection" class="headerlink" title="title:A Simple Pooling-Based Design for Real-Time Salient Object Detection"></a>title:A Simple Pooling-Based Design for Real-Time Salient Object Detection</h2><h2 id="摘要："><a href="#摘要：" class="headerlink" title="摘要："></a>摘要：</h2><p>本文通过扩展卷积神经网络中的池化部分来解决显著性目标检测问题。基于特征金字塔，在自底向上路径上加入GGM模块（Global Guidance Module），目的是为不同特征层提供潜在显著对象的位置信息。在自顶向下路径上加入FAM模块（Feature Aggregation Module），目的是将粗糙语义信息和细致特征更好融合。在FPNs的融合操作后的自顶向下路径中加入FAMs,能够多尺度地对GGM中的粗糙特征进行无缝融合。这两个基于池化的模块允许逐步重新定义高级语义特征，从而产生细节丰富的显著性特征图。实验结果表明，本文提出的方法能够更准确地定位具有锐化细节的突出物体，从而大大提高了与以往技术水平相比的性能。所提出的方法在处理300*400的图片时，速度大于30FPS。</p><h2 id="实验模型及创新型"><a href="#实验模型及创新型" class="headerlink" title="实验模型及创新型"></a>实验模型及创新型</h2><h3 id="实验模型"><a href="#实验模型" class="headerlink" title="实验模型"></a>实验模型</h3><p><img src="https://img-blog.csdnimg.cn/20191224094942686.png"><br>本文所提模型基于FPNs，包含两个基础模块：GGM和FAM模块。如图1所示，GGM模块由金字塔池化（PPM）和一系列GGFs组成。本文的GGM都是独立模块，PPM位于自顶向上路径的最高层，这样做的目的是得到全局引导信息。通过引入GGFs，将PPM提取的高层次语义信息送到每层金字塔的每个特征图中，从而弥补U型网络的缺点（自上而下的信号逐渐被稀释）。考虑到GGFs中的粗糙特征图<br>与金字塔不同尺度提取出来的特征图的融合问题，提出一个模块叫FAM模块。FAM模块输入为融合后的特征图，FAM模块首先将融合的特征图转换为多个特征空间，以捕获不同尺度的局部上下文信息，然后组合信息以更好地权衡融合输入特征图的组成。</p><h3 id="创新性"><a href="#创新性" class="headerlink" title="创新性"></a>创新性</h3><h4 id="GGM模块："><a href="#GGM模块：" class="headerlink" title="GGM模块："></a>GGM模块：</h4><p>CNN的经验感受野远小于理论上的感知域，因此整个网络的感受域不足以捕获输入图像的全局信息。对此的直接影响是只能发现部分显著物体，如图2中（c）所示。作者提出的GGM模块中PPM模块，如下图所示，包含四个分支，第一个是恒等映射层，最后一个是全局平均池化层，中间两个是自适应平均池化层，为了保证输出的特征图是3×3和5×5。<br><img src="https://img-blog.csdnimg.cn/20191224095006916.png"><br>通过引入多个GGF全局引导流，将金字塔池化后的特征引入到各个级别特征途中，这样我们就可以增加全局引导信息在top-down过程中所占的分量，从而保证位置信息不会在不断上采样过程中丢失。由图2（f），当GGM被合并时，得到的显著性图的质量得到了很大的改善，突出目标可以被精确的发现。<br><img src="https://img-blog.csdnimg.cn/20191224095027155.png"></p><h4 id="FAM模块："><a href="#FAM模块：" class="headerlink" title="FAM模块："></a>FAM模块：</h4><p>前向过程中，仍然使用了金字塔池化的思想，对输入进行四个分支的平均池化，再通过3×3卷积进行上采样，最后再将四个分支拼接。拼接完加3×3卷积，目的是降低上采样的重叠效应。<br><img src="https://img-blog.csdnimg.cn/20191224095043782.png"><br>总的来说，FAM模块有两个优点：降低重叠效应，尤其是当上采样倍数较大时，允许每个空间位置在不同尺度空间查看局部环境，进一步扩大整个网络的接收领域，多次引入FAM可以更好地锐化突出物体的细节。</p>]]></content:encoded>
+      <content:encoded><![CDATA[<h2 id="摘要："><a href="#摘要：" class="headerlink" title="摘要："></a>摘要：</h2><p>本文通过扩展卷积神经网络中的池化部分来解决显著性目标检测问题。基于特征金字塔，在自底向上路径上加入GGM模块（Global Guidance Module），目的是为不同特征层提供潜在显著对象的位置信息。在自顶向下路径上加入FAM模块（Feature Aggregation Module），目的是将粗糙语义信息和细致特征更好融合。在FPNs的融合操作后的自顶向下路径中加入FAMs,能够多尺度地对GGM中的粗糙特征进行无缝融合。这两个基于池化的模块允许逐步重新定义高级语义特征，从而产生细节丰富的显著性特征图。实验结果表明，本文提出的方法能够更准确地定位具有锐化细节的突出物体，从而大大提高了与以往技术水平相比的性能。所提出的方法在处理300*400的图片时，速度大于30FPS。</p><h2 id="实验模型及创新型"><a href="#实验模型及创新型" class="headerlink" title="实验模型及创新型"></a>实验模型及创新型</h2><h3 id="实验模型"><a href="#实验模型" class="headerlink" title="实验模型"></a>实验模型</h3><p><img src="https://img-blog.csdnimg.cn/20191224094942686.png"><br>本文所提模型基于FPNs，包含两个基础模块：GGM和FAM模块。如图1所示，GGM模块由金字塔池化（PPM）和一系列GGFs组成。本文的GGM都是独立模块，PPM位于自顶向上路径的最高层，这样做的目的是得到全局引导信息。通过引入GGFs，将PPM提取的高层次语义信息送到每层金字塔的每个特征图中，从而弥补U型网络的缺点（自上而下的信号逐渐被稀释）。考虑到GGFs中的粗糙特征图<br>与金字塔不同尺度提取出来的特征图的融合问题，提出一个模块叫FAM模块。FAM模块输入为融合后的特征图，FAM模块首先将融合的特征图转换为多个特征空间，以捕获不同尺度的局部上下文信息，然后组合信息以更好地权衡融合输入特征图的组成。</p><h3 id="创新性"><a href="#创新性" class="headerlink" title="创新性"></a>创新性</h3><h4 id="GGM模块："><a href="#GGM模块：" class="headerlink" title="GGM模块："></a>GGM模块：</h4><p>CNN的经验感受野远小于理论上的感知域，因此整个网络的感受域不足以捕获输入图像的全局信息。对此的直接影响是只能发现部分显著物体，如图2中（c）所示。作者提出的GGM模块中PPM模块，如下图所示，包含四个分支，第一个是恒等映射层，最后一个是全局平均池化层，中间两个是自适应平均池化层，为了保证输出的特征图是3×3和5×5。<br><img src="https://img-blog.csdnimg.cn/20191224095006916.png"><br>通过引入多个GGF全局引导流，将金字塔池化后的特征引入到各个级别特征途中，这样我们就可以增加全局引导信息在top-down过程中所占的分量，从而保证位置信息不会在不断上采样过程中丢失。由图2（f），当GGM被合并时，得到的显著性图的质量得到了很大的改善，突出目标可以被精确的发现。<br><img src="https://img-blog.csdnimg.cn/20191224095027155.png"></p><h4 id="FAM模块："><a href="#FAM模块：" class="headerlink" title="FAM模块："></a>FAM模块：</h4><p>前向过程中，仍然使用了金字塔池化的思想，对输入进行四个分支的平均池化，再通过3×3卷积进行上采样，最后再将四个分支拼接。拼接完加3×3卷积，目的是降低上采样的重叠效应。<br><img src="https://img-blog.csdnimg.cn/20191224095043782.png"><br>总的来说，FAM模块有两个优点：降低重叠效应，尤其是当上采样倍数较大时，允许每个空间位置在不同尺度空间查看局部环境，进一步扩大整个网络的接收领域，多次引入FAM可以更好地锐化突出物体的细节。</p>]]></content:encoded>
       
       
       
